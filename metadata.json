@@ -1,0 +1,6 @@
+{
+  "name": "SkillHub - Student Skills & Service Exchange",
+  "description": "Campus marketplace for student talents, tutoring, design, braiding, snacks, and peer services.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,100 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Student user profile information with authentication, contact, and account type",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Firebase Auth User ID" },
+        "studentNumber": { "type": "string", "description": "Student identification number" },
+        "firstName": { "type": "string", "description": "User first name" },
+        "lastName": { "type": "string", "description": "User last name" },
+        "email": { "type": "string", "format": "email", "description": "Student or Google email address" },
+        "phone": { "type": "string", "description": "WhatsApp contact phone number" },
+        "faculty": { "type": "string", "description": "University faculty or department" },
+        "campus": { "type": "string", "description": "Campus location" },
+        "accountType": { "type": "string", "enum": ["customer", "seller"], "description": "Account role" },
+        "createdAt": { "type": "string", "description": "Account creation timestamp" },
+        "rating": { "type": "number", "description": "Average provider rating" },
+        "reviewCount": { "type": "number", "description": "Total review count" },
+        "bio": { "type": "string", "description": "Provider biography or description" },
+        "bankName": { "type": "string", "description": "Bank name for seller payouts" },
+        "accountNumber": { "type": "string", "description": "Bank account number for payouts" }
+      },
+      "required": ["uid", "email", "firstName", "accountType"]
+    },
+    "Product": {
+      "title": "Product",
+      "description": "Campus marketplace listing (goods or service)",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Listing ID" },
+        "name": { "type": "string", "description": "Product or service title" },
+        "category": { "type": "string", "description": "Product category" },
+        "price": { "type": "number", "description": "Price in ZAR" },
+        "description": { "type": "string", "description": "Product description" },
+        "sellerUid": { "type": "string", "description": "UID of the student provider" },
+        "providerName": { "type": "string", "description": "Name of the provider" },
+        "providerPhone": { "type": "string", "description": "Phone number for direct WhatsApp ordering" },
+        "providerStudentNumber": { "type": "string", "description": "Student number of the provider" },
+        "campus": { "type": "string", "description": "Campus where service/item is available" },
+        "deliveryTime": { "type": "string", "description": "Estimated turnaround or delivery time" },
+        "inStock": { "type": "boolean", "description": "Whether item is currently in stock or available" },
+        "createdAt": { "type": "string", "description": "Listing timestamp" }
+      },
+      "required": ["id", "name", "price", "sellerUid", "providerName"]
+    },
+    "Review": {
+      "title": "Review",
+      "description": "Customer feedback and rating for a provider or service",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Review unique ID" },
+        "targetId": { "type": "string", "description": "Provider ID or studentNumber or service ID" },
+        "targetType": { "type": "string", "enum": ["provider", "service"], "description": "Type of target being reviewed" },
+        "reviewerUid": { "type": "string", "description": "UID of the reviewing user" },
+        "reviewerName": { "type": "string", "description": "Name of the student writing review" },
+        "rating": { "type": "number", "description": "Rating score between 1 and 5" },
+        "comment": { "type": "string", "description": "Review text feedback" },
+        "createdAt": { "type": "string", "description": "Timestamp when review was submitted" }
+      },
+      "required": ["id", "targetId", "reviewerUid", "rating", "comment"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Student order with R2 platform fee calculations",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Order ID" },
+        "customerUid": { "type": "string", "description": "Buyer's UID" },
+        "customerName": { "type": "string", "description": "Buyer's name" },
+        "customerEmail": { "type": "string", "description": "Buyer's email" },
+        "items": { "type": "string", "description": "JSON stringified list of purchased items" },
+        "subtotal": { "type": "number", "description": "Subtotal amount in ZAR" },
+        "platformFee": { "type": "number", "description": "Platform fee (R2 base + 2% for orders > R100)" },
+        "total": { "type": "number", "description": "Total charged amount in ZAR" },
+        "status": { "type": "string", "description": "Order status" },
+        "createdAt": { "type": "string", "description": "Order creation date" }
+      },
+      "required": ["id", "customerUid", "subtotal", "platformFee", "total"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "Registered students and providers profiles"
+    },
+    "/products/{productId}": {
+      "schema": "Product",
+      "description": "Marketplace items and services listed by campus providers"
+    },
+    "/reviews/{reviewId}": {
+      "schema": "Review",
+      "description": "Provider ratings and reviews submitted by students"
+    },
+    "/orders/{orderId}": {
+      "schema": "Order",
+      "description": "Orders submitted by student customers"
+    }
+  }
+}
